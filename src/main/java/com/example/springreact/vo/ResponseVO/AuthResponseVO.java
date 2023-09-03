@@ -1,0 +1,13 @@
+package com.example.springreact.vo.ResponseVO;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public class AuthResponseVO {
+	
+	private int emp_no;
+	private String auth;
+
+}
