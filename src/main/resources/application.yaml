@@ -10,5 +10,4 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  #  default ?? ??
   type-aliases-package: com.example.springreact.mapper.*
