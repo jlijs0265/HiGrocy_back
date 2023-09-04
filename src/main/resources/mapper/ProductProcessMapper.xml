@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springreact.mapper.ProductProcessMapper">
+
+  <select id="findByProduct_code" parameterType= "int" resultType="org.zerock.domain.ProductProcess">
+  	SELECT * FROM ProductProcess where product_code = #{product_code}
+  </select>
+
+	<insert id="save" parameterType="org.zerock.domain.ProductProcess">
+		insert into ProductProcess (ProductProcess_code ,product_code ,process_time ,process_order ,machine_code)
+		VALUES(seq_ProductProcess_code.nextval, #{product_code}, #{process_time}, #{process_order},#{machine_code})
+	</insert>
+
+	<delete id="deleteByProduct_code" parameterType="int">
+		delete ProductProcess
+		where product_code = #{product_code}
+	</delete>
+
+</mapper>
