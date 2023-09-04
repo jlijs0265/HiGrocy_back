@@ -26,10 +26,10 @@ public class StorageServiceImpl implements StorageService {
 
 		ModelMapper modelMapper = new ModelMapper();
 		Storage storage = modelMapper.map(storageDTO,Storage.class);
-		mapper.register(storage);
+
 		System.out.println("StorageServiceImpl : " + storage);
 
-		return 0;
+		return mapper.register(storage);
 	}
 
 	@Override
@@ -37,13 +37,12 @@ public class StorageServiceImpl implements StorageService {
 		ModelMapper modelMapper = new ModelMapper();
 		Storage storage = modelMapper.map(storageDTO,Storage.class);
 		System.out.println("StorageServiceImpl : " + storage);
-		mapper.update(storage);
-		return 0;
+		return mapper.update(storage);
 	}
 
 	@Override
 	public int delete(int code) {
-		return 0;
+		return mapper.delete(code);
 	}
 
 	@Override

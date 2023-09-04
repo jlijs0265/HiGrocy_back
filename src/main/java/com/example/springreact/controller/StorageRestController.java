@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,10 +25,8 @@ public class StorageRestController {
 
 	private StorageService service;
 
-	  @PostMapping(value="insert/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
+	  @PostMapping(value="insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	  public ResponseEntity<String> registerStorage(@RequestBody StorageRequestVO storegeRequestVO){
-//		  log.info("Storage register..........");
-//		  log.info("vo입니다 : "+storegeRequestVO);
 
 		  System.out.println("Storage register..........");
 		  System.out.println("vo입니다 : "+storegeRequestVO);
@@ -42,10 +41,10 @@ public class StorageRestController {
 		  HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		  }
 
-	@PutMapping(value="/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateStorage(@RequestBody StorageRequestVO storegeRequestVO){
 
-		  //VO => DTO
+		//VO => DTO
 		ModelMapper modelMapper = new ModelMapper();
 		StorageDTO storageDTO = modelMapper.map(storegeRequestVO,StorageDTO.class);
 		System.out.println("storageDTO : " + storageDTO);
@@ -54,16 +53,13 @@ public class StorageRestController {
 		  HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@DeleteMapping(value = "/storage/{code}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/{code}")
 	public ResponseEntity<String> deleteStorage(@PathVariable int code) {
-//		log.info("Storage delete........code:"+code);
 			System.out.println("CODE : " + code);
 		  return service.delete(code) == 1 ? new
 		  ResponseEntity<>("success",HttpStatus.OK) : new
 		  ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
-
 
 	@GetMapping("/list")
 	public ResponseEntity<List<StorageResponseVO>> getStorageList() {
