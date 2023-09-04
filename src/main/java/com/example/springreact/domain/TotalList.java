@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class TotalList {
-	List<com.example.springreact.domain.orderList> orderList;
-	com.example.springreact.domain.orderRecord orderRecord;
+	List<com.example.springreact.domain.OrderDetail> orderList;
+	Order orderRecord;
 }

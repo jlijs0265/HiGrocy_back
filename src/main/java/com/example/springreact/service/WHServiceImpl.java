@@ -1,10 +1,7 @@
 package com.example.springreact.service;
 
-import com.example.springreact.domain.WHList;
 import com.example.springreact.dto.WHListDTO;
-import com.example.springreact.mapper.WHManageMapper;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

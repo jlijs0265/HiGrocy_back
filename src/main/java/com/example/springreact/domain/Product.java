@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class Product {
 
-	private String name;
 	private int product_code;
 	private int item_code;
+	private String image_path;
 	
 }

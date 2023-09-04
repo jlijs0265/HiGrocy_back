@@ -7,5 +7,7 @@ public class Item {
 	
 	private int item_code;
 	private String type;
+	private String name;
+	private String volume;
 	
 }

@@ -1,6 +1,5 @@
 package com.example.springreact.service;
 
-import com.example.springreact.domain.WHList;
 import com.example.springreact.dto.WHListDTO;
 
 
