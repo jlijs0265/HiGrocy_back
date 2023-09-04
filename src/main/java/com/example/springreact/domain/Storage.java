@@ -8,5 +8,4 @@ public class Storage {
 	private String name;
 	private String location;
 	private String manager;
-	
 }
