@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class TotalList {
 	List<com.example.springreact.domain.OrderDetail> orderList;
-	Order orderRecord;
+	ItemOrder orderRecord;
 }

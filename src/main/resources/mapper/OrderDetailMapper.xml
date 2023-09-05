@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springreact.mapper.OrderMapper">
+
+    <select id="getList" resultType="com.example.springreact.domain.OrderDetail">
+		SELECT * FROM order_detail
+	</select>
+
+	<select id="getListOne" resultType="com.example.springreact.domain.OrderDetail">
+		SELECT * FROM order_detail where order_code = #{order_code}
+	</select>
+
+	<insert id="insert" parameterType="com.example.springreact.domain.OrderDetail">
+		<selectKey resultType="int" keyProperty="order_code" order= "BEFORE">
+			SELECT MAX(order_code) FROM item_order
+		</selectKey>
+		INSERT INTO order_detail (order_code, item_code, account_code, price, amount)
+		VALUES(#{order_code}, #{item_code} ,#{account_code}, #{price} ,#{amount})
+	</insert>
+
+	<update id="update" parameterType="com.example.springreact.domain.OrderDetail">
+		update order_detail set
+							  item_code = #{item_code}, account_code = #{account_code}, price = #{price}, amount = #{amount}
+		where order_code = #{order_code}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from order_detail
+		where order_code = #{order_code}
+	</delete>
+
+
+	<select id="selectBetween" parameterType="com.example.springreact.domain.BetweenDate" resultType="com.example.springreact.domain.ItemOrder">
+			 <![CDATA[select * from item_order
+					  where order_date >= #{start}
+						AND order_date <= #{end}
+		]]>
+	</select>
+	<select id="selectItem" resultType="com.example.springreact.domain.OrderDetail">
+			 <![CDATA[select * from order_detail
+					  where order_code = #{order_code}
+		]]>
+	</select>
+
+</mapper>
