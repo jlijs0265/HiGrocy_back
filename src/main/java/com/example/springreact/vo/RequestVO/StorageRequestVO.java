@@ -12,5 +12,6 @@ public class StorageRequestVO {
 	private String name;
 	private String location;
 	private String manager;
-	
+	private String max_loadage;
+
 }

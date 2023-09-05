@@ -8,6 +8,7 @@ import com.example.springreact.vo.ResponseVO.StorageResponseVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/storage/*")
+@RequestMapping("/*")
 //@Log4j
 @AllArgsConstructor
 public class StorageRestController {
 
+	@Autowired
 	private StorageService service;
 
-	  @PostMapping(value="insert", consumes = MediaType.APPLICATION_JSON_VALUE)
+	  @PostMapping(value="/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
 	  public ResponseEntity<String> registerStorage(@RequestBody StorageRequestVO storegeRequestVO){
 
 		  System.out.println("Storage register..........");
@@ -35,13 +37,10 @@ public class StorageRestController {
 		  ModelMapper modelMapper = new ModelMapper();
 		  StorageDTO storageDTO = modelMapper.map(storegeRequestVO,StorageDTO.class);
 		  System.out.println("storageDTO : " + storageDTO);
-
-			/* return new ResponseEntity<>("success",HttpStatus.OK); */
-		  return service.register(storageDTO) ==1 ? new ResponseEntity<>("success",
-		  HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		  return ResponseEntity.status(HttpStatus.OK).body(service.register(storageDTO)+"");
 		  }
 
-	@PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value="/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateStorage(@RequestBody StorageRequestVO storegeRequestVO){
 
 		//VO => DTO
@@ -53,7 +52,7 @@ public class StorageRestController {
 		  HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@DeleteMapping(value = "/{code}")
+	@DeleteMapping(value = "/storage/{code}")
 	public ResponseEntity<String> deleteStorage(@PathVariable int code) {
 			System.out.println("CODE : " + code);
 		  return service.delete(code) == 1 ? new
@@ -61,7 +60,7 @@ public class StorageRestController {
 		  ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@GetMapping("/list")
+	@GetMapping("/storage/list")
 	public ResponseEntity<List<StorageResponseVO>> getStorageList() {
 		List<StorageDTO> storageDTOList = service.getList();
 		List<StorageResponseVO> storageResponseVOList = storageDTOList.stream()
@@ -69,7 +68,8 @@ public class StorageRestController {
 						dto.getStorage_code(),
 						dto.getName(),
 						dto.getLocation(),
-						dto.getManager()
+						dto.getManager(),
+						dto.getMax_loadage()
 				))
 				.collect(Collectors.toList());
 		System.out.println("StorageResponseVOList : "+ storageResponseVOList);

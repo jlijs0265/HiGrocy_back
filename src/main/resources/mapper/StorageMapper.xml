@@ -17,16 +17,20 @@
 	</select>
 	
 <!-- seq_storage.nextval or #{storage_code}-->
-	<insert id="register" >
-		insert into storage(storage_code, name, location, manager)
-		values (seq_storage_code.nextval, #{name}, #{location}, #{manager})
+	<insert id="register">
+		<selectKey order="BEFORE" keyProperty="storage_code" resultType="int">
+			select seq_storage_code.nextval from dual
+		</selectKey>
+		insert into storage(storage_code, name, location, manager,max_loadage)
+		values (#{storage_code}, #{name}, #{location}, #{manager},#{max_loadage})
 	</insert>
 	
 	<update id="update">
 		update storage set
 			name=#{name},
 			location=#{location},
-			manager=#{manager}
+			manager=#{manager},
+			max_loadage=#{max_loadage}
 		where
 			storage_code=#{storage_code}
 	</update>
@@ -34,8 +38,5 @@
 	<delete id="delete">
 		delete from storage where storage_code=#{storage_code}
 	</delete>
-	
-	
-	
-	
+
 </mapper>

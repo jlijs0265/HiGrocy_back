@@ -14,11 +14,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 //@Log4j
 public class StorageServiceImpl implements StorageService {
 
+	@Autowired
 	StorageMapper mapper;
 
 	@Override
@@ -28,8 +29,10 @@ public class StorageServiceImpl implements StorageService {
 		Storage storage = modelMapper.map(storageDTO,Storage.class);
 
 		System.out.println("StorageServiceImpl : " + storage);
+		mapper.register(storage);
+		StorageDTO storageDto = modelMapper.map(storage,StorageDTO.class);
 
-		return mapper.register(storage);
+		return storageDto.getStorage_code();
 	}
 
 	@Override
