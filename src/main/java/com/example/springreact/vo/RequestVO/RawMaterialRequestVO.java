@@ -16,6 +16,7 @@ public class RawMaterialRequestVO {
 	String renewability;
 	String unit;
 	int standard_quantity;
+	String volume;
 	String origin;
 
 
