@@ -33,7 +33,6 @@ public class StorageRestController {
 		  System.out.println("Storage register..........");
 		  System.out.println("vo입니다 : "+storegeRequestVO);
 
-
 		  //VO => DTO 변환
 		  ModelMapper modelMapper = new ModelMapper();
 		  StorageDTO storageDTO = modelMapper.map(storegeRequestVO,StorageDTO.class);
