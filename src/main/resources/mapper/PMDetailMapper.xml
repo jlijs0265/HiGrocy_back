@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.PMListMapper">
+
+  <select id="findAll" resultType="org.example.domain.PMDetails">
+  	SELECT * FROM PMDetails 
+  </select>
+  
+    <select id="findByPm_detail_code" parameterType="String" resultType="org.example.domain.PMDetails">
+  	SELECT * FROM PMDetails where pm_detail_code = #{pm_detail_code}
+  </select>
+
+	<insert id="save" parameterType="org.example.domain.PMDetails">
+		insert into PMDetails (pm_detail_code, machine_code, name, factory_name, location)
+		VALUES(pm_detail_code.nextval, #{machine_code},  #{name}, #{factory_name}, #{location})
+	</insert>
+	
+	<update id="update" parameterType="org.example.domain.PMDetails">
+		update PMDetails set
+		machine_code = #{machine_code}, name = #{name}, factory_name = #{factory_name}, location = #{location}
+		where pm_detail_code = #{pm_detail_code}
+	</update>
+	
+	<delete id="deleteByPm_detail_code" parameterType="String">
+		delete PMDetails
+		where pm_detail_code = #{pm_detail_code}
+	</delete>
+
+</mapper>
