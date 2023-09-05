@@ -1,11 +1,15 @@
 package com.example.springreact.vo.RequestVO;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RawMaterialRequestVO {
+
 	int raw_materials_code;
 	String type;
 	String name;
@@ -13,9 +17,7 @@ public class RawMaterialRequestVO {
 	String unit;
 	int standard_quantity;
 	String origin;
-	
-	// item_code
-	private int item_code;
+
 
 	
 }
