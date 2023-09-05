@@ -14,11 +14,13 @@ public class StorageResponseVO {
 	private String name;
 	private String location;
 	private String manager;
+	private String max_loadage;
 
 	public StorageResponseVO(StorageDTO item) {
 		this.storage_code = item.getStorage_code();
 		this.name = getName();
 		this.location = getLocation();
 		this.manager = getManager();
+		this.max_loadage = getMax_loadage();
 	}
 }
