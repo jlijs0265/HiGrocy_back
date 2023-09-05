@@ -14,11 +14,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 //@Log4j
 public class StorageServiceImpl implements StorageService {
 
+	@Autowired
 	StorageMapper mapper;
 
 	@Override
