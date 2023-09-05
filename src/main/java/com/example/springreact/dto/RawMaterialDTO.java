@@ -17,7 +17,6 @@ public class RawMaterialDTO {
 	String unit;
 	int standard_quantity;
 	String origin;
-	
 	// item_code
 	private int item_code;
 

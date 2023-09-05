@@ -9,7 +9,7 @@ public class RawMaterials {
     private int item_code;
     private String type;
     private String renewability;
-    private String nuit;
+    private String unit;
     private int standard_quantity;
     private String origin;
 }
