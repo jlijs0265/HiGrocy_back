@@ -33,9 +33,18 @@
     </resultMap>
 
     <select id="getRawMaterialList" resultMap="rawMap">
+        <![CDATA[
         SELECT r.raw_materials_code, i.item_code, r.raw_type, r.unit, r.renewability, r.standard_quantity, r.origin, i.name, i.volume
-            FROM raw_materials r LEFT JOIN item i
-            ON r.item_code = i.item_code
+        FROM (
+            SELECT ROWNUM R,raw_materials_code, item_code, raw_type, renewability, unit, standard_quantity, origin
+                FROM raw_materials
+                WHERE ROWNUM <= #{pageNum} * #{amount}
+             ) r LEFT JOIN item i
+        ON r.item_code = i.item_code
+        WHERE R > (#{pageNum} -1) * #{amount}
+        ]]>
+
+
     </select>
 
     <select id="getRawMaterial" resultMap="rawMap" parameterType="int">
@@ -59,6 +68,9 @@
         DELETE FROM raw_materials WHERE raw_materials_code=#{raw_materials_code}
     </delete>
 
+    <select id="getTotalRaw">
+        SELECT COUNT(*) FROM raw_Materials
+    </select>
 
 
 
