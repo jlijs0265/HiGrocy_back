@@ -15,4 +15,11 @@ public interface RawMaterialMapper {
 
     List<RawMaterialDTO> getRawMaterialList();
 
+    RawMaterialDTO getRawMaterial(int raw_materials_code);
+
+    void updateItem(Item item);
+    void updateRawMaterial(RawMaterials rawMaterials);
+
+    void deleteRawMaterial(int raw_materials_code);
+
 }

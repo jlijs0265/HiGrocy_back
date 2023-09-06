@@ -13,7 +13,7 @@
 
     <insert id="registerRawMaterial" parameterType="com.example.springreact.domain.RawMaterials">
         INSERT INTO raw_materials(raw_materials_code, item_code, raw_type, renewability, unit, standard_quantity, origin)
-        VALUES(seq_raw.nextval, #{item_code}, #{type}, #{renewability}, #{unit}, #{standard_quantity}, #{origin} )
+        VALUES(#{item_code}, #{item_code}, #{raw_type}, #{renewability}, #{unit}, #{standard_quantity}, #{origin} )
     </insert>
 
     <resultMap id="rawMap" type="com.example.springreact.dto.RawMaterialDTO">
@@ -37,5 +37,29 @@
             FROM raw_materials r LEFT JOIN item i
             ON r.item_code = i.item_code
     </select>
+
+    <select id="getRawMaterial" resultMap="rawMap" parameterType="int">
+        SELECT r.raw_materials_code, i.item_code, r.raw_type, r.unit, r.renewability, r.standard_quantity, r.origin, i.name, i.volume
+        FROM raw_materials r LEFT JOIN item i
+        ON r.item_code = i.item_code
+        WHERE r.raw_materials_code=#{raw_materials_code}
+    </select>
+
+
+    <update id="updateItem" parameterType="com.example.springreact.domain.Item">
+        UPDATE item SET name=#{name} WHERE item_code=#{item_code}
+    </update>
+
+    <update id="updateRawMaterial" parameterType="com.example.springreact.domain.RawMaterials">
+        UPDATE raw_materials SET renewability=#{renewability}, standard_quantity=#{standard_quantity}
+        WHERE raw_materials_code=#{raw_materials_code}
+    </update>
+
+    <delete id="deleteRawMaterial" parameterType="int">
+        DELETE FROM raw_materials WHERE raw_materials_code=#{raw_materials_code}
+    </delete>
+
+
+
 
 </mapper>

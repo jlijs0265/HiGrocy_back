@@ -1,21 +1,21 @@
 package com.example.springreact.vo.ResponseVO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @AllArgsConstructor
-@Getter
+@NoArgsConstructor
+@Data
+@ToString
 public class RawMaterialResponseVO {
+
 	int raw_materials_code;
-	String type;
+	String raw_type;
 	String name;
 	String renewability;
 	String unit;
 	int standard_quantity;
+	String volume;
 	String origin;
-	
-	// item_code
-	private int item_code;
 
 	
 }
