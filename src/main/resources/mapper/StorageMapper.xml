@@ -39,4 +39,7 @@
 		delete from storage where storage_code=#{storage_code}
 	</delete>
 
+	<select id="getTotal">
+		SELECT COUNT(*) FROM storage
+	</select>
 </mapper>

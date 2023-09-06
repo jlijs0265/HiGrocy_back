@@ -32,7 +32,6 @@ public class WarehousingRecordServiceImpl implements WarehousingRecordService {
                 .map(item -> modelMapper.map(item, WarehousingRecordDTO.class))
                 .collect(Collectors.toList());
         return CodeByList;
-
     }
 
     @Override

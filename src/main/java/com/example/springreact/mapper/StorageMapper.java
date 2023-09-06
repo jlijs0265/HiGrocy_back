@@ -19,4 +19,5 @@ public interface StorageMapper {
 	//전체 조회
 	public List<Storage> getList();
 
+	int getTotal();
 }

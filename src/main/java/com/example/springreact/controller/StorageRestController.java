@@ -1,9 +1,12 @@
 package com.example.springreact.controller;
 
 import com.example.springreact.domain.Storage;
+import com.example.springreact.dto.Criteria;
+import com.example.springreact.dto.PageDto;
 import com.example.springreact.dto.StorageDTO;
 import com.example.springreact.service.StorageService;
 import com.example.springreact.vo.RequestVO.StorageRequestVO;
+import com.example.springreact.vo.ResponseVO.ResponseVO;
 import com.example.springreact.vo.ResponseVO.StorageResponseVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -61,8 +64,13 @@ public class StorageRestController {
 	}
 
 	@GetMapping("/storage/list")
-	public ResponseEntity<List<StorageResponseVO>> getStorageList() {
-		List<StorageDTO> storageDTOList = service.getList();
+	public ResponseEntity<ResponseVO> getStorageList(@RequestParam(value = "page", defaultValue = "1") String page) {
+		Criteria criteria = new Criteria();
+		if(page != null) {
+			criteria.setPageNum(Integer.parseInt(page));
+		}
+		List<StorageDTO> storageDTOList = service.getList(criteria);
+
 		List<StorageResponseVO> storageResponseVOList = storageDTOList.stream()
 				.map(dto -> new StorageResponseVO(
 						dto.getStorage_code(),
@@ -73,6 +81,11 @@ public class StorageRestController {
 				))
 				.collect(Collectors.toList());
 		System.out.println("StorageResponseVOList : "+ storageResponseVOList);
-		return new ResponseEntity<>(storageResponseVOList, HttpStatus.OK);
+		PageDto pageDto = new PageDto(5, service.getTotal(), criteria);
+		System.out.println("Storage Page : "+ pageDto);
+		ResponseVO response = new ResponseVO(storageResponseVOList, pageDto);
+		return storageResponseVOList != null ? ResponseEntity.status(HttpStatus.OK).body(response)
+				: ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//		return new ResponseEntity<>(storageResponseVOList, HttpStatus.OK);
 	}
 }

@@ -1,6 +1,7 @@
 package com.example.springreact.service;
 
 import com.example.springreact.domain.Storage;
+import com.example.springreact.dto.Criteria;
 import com.example.springreact.dto.StorageDTO;
 import com.example.springreact.mapper.StorageMapper;
 import com.example.springreact.vo.ResponseVO.StorageResponseVO;
@@ -54,7 +55,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public List<StorageDTO> getList() {
+	public List<StorageDTO> getList(Criteria criteria) {
 		ModelMapper modelMapper = new ModelMapper();
 		List<StorageDTO> storageList = mapper.getList()
 				.stream()
@@ -65,5 +66,10 @@ public class StorageServiceImpl implements StorageService {
 
 
 		return storageList;
+	}
+
+	@Override
+	public int getTotal() {
+		return mapper.getTotal();
 	}
 }
