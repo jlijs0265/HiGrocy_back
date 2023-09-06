@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class Criteria {
     private int pageNum;
     private int amount;
-    private String type;
-    private String keyword;
+    private String searchType;
+    private String searchContent;
 
 
     // 기본
@@ -25,9 +25,8 @@ public class Criteria {
     }
 
     // URIComponentsBuilder를 이용하여 링크 새성
-
     public String[] getTypeArr() {
-        return type == null ? new String[]{} : type.split("");
+        return searchType == null ? new String[]{} : searchType.split("");
     }
 
 }

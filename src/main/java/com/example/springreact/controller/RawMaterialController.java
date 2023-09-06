@@ -45,11 +45,15 @@ public class RawMaterialController {
     }
 
     @GetMapping(value = {"/raw_material"})
-    public ResponseEntity<RawResponseVO> getRawMaterialList(@RequestParam("page") String page) {
+    public ResponseEntity<RawResponseVO> getRawMaterialList(@RequestParam(value = "page", defaultValue = "1") String page,
+                                                            @RequestParam(value = "searchType", defaultValue = "name") String searchType,
+                                                            @RequestParam(value = "searchContent", defaultValue = "") String searchContent ) {
+        log.info("--" + page + "--" +  searchType + "--" +  searchContent );
         Criteria criteria = new Criteria();
-        if(page != null) {
-            criteria.setPageNum(Integer.parseInt(page));
-        }
+        criteria.setPageNum(Integer.parseInt(page));
+        criteria.setSearchType(searchType);
+        criteria.setSearchContent(searchContent);
+
         List<RawMaterialResponseVO> rawMaterialResponseVOList = service.getRawMaterialList(criteria);
         PageDto pageDto = new PageDto(5, service.getTotalRaw(), criteria);
         RawResponseVO response = new RawResponseVO(rawMaterialResponseVOList, pageDto);
