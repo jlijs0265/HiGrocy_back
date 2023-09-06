@@ -26,6 +26,7 @@ public class WarehousingRecordServiceImpl implements WarehousingRecordService {
         System.out.println("WH_CODE : " + wh_code);
         System.out.println("getListByCode : " + wh_mapper.selectGetList(wh_code));
         return null;
+
     }
 
 }
