@@ -6,12 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class WHListDTO {
+public class WarehousingRecordDTO {
 	//입출고 내역 코드
 	private int warehousing_record_code;
 	//품목 코드
@@ -28,4 +29,9 @@ public class WHListDTO {
 	private String warehousing_type_code;
 	//유통기한
 	private Date keeping_date;
+	//아이템 객체 리스트
+	private List<ItemDTO> itemDto0List;
+	//창고 객체 리스트
+	private List<StorageDTO> storageDTOList;
+
 }
