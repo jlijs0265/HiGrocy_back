@@ -12,6 +12,7 @@ import lombok.ToString;
 public class ItemDTO {
 	
 	private int item_code;
+	private String name;
+	private String volume;
 	private String type;
-	
 }

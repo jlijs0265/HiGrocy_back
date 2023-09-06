@@ -5,7 +5,37 @@
 <mapper namespace="com.example.springreact.mapper.RawMaterialMapper">
 
     <insert id="registerItem" parameterType="com.example.springreact.domain.Item">
-        INSERT INTO item(item_code, type, name, volume) VALUES( #{item_code}, #{type}, #{name}, #{volume} )
+        INSERT INTO item(item_code, type, name, volume) VALUES( seq_item.nextval, #{type}, #{name}, #{volume} )
+        <selectKey resultType="int" keyProperty="item_code" order="AFTER">
+            SELECT seq_item.CURRVAL FROM dual
+        </selectKey>
     </insert>
+
+    <insert id="registerRawMaterial" parameterType="com.example.springreact.domain.RawMaterials">
+        INSERT INTO raw_materials(raw_materials_code, item_code, raw_type, renewability, unit, standard_quantity, origin)
+        VALUES(seq_raw.nextval, #{item_code}, #{type}, #{renewability}, #{unit}, #{standard_quantity}, #{origin} )
+    </insert>
+
+    <resultMap id="rawMap" type="com.example.springreact.dto.RawMaterialDTO">
+        <id property="raw_materials_code" column="raw_materials_code" />
+        <result property="raw_type" column="raw_type" />
+        <result property="renewability" column="renewability" />
+        <result property="unit" column="unit" />
+        <result property="standard_quantity" column="standard_quantity" />
+        <result property="origin" column="origin" />
+        <association property="item" resultMap="itemMap"/>
+    </resultMap>
+
+    <resultMap id="itemMap" type="com.example.springreact.domain.Item">
+        <id property="item_code" column="item_code"/>
+        <result property="name" column="name" />
+        <result property="volume" column="volume" />
+    </resultMap>
+
+    <select id="getRawMaterialList" resultMap="rawMap">
+        SELECT r.raw_materials_code, i.item_code, r.raw_type, r.unit, r.renewability, r.standard_quantity, r.origin, i.name, i.volume
+            FROM raw_materials r LEFT JOIN item i
+            ON r.item_code = i.item_code
+    </select>
 
 </mapper>
