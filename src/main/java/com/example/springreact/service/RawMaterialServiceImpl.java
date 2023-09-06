@@ -20,10 +20,8 @@ import java.util.List;
 @Log
 public class RawMaterialServiceImpl implements RawMaterialService{
 
-
     @Autowired
     private RawMaterialMapper rawMaterialMapper;
-
 
     @Transactional
     @Override

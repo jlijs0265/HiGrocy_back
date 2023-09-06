@@ -3,11 +3,188 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springreact.mapper.WarehousingRecordMapper">
-	<select id="selectGetList" resultType="com.example.springreact.domain.WarehousingRecord" parameterType="string">
+
+    <resultMap id="selectGetListMap" type="com.example.springreact.domain.WarehousingRecord">
+        <id property="warehousing_code"  column="warehousing_code"/>
+        <result property="item_code"  column="item_code"/>
+        <result property="storage_code"  column="storage_code"/>
+        <result property="amount"  column="amount"/>
+        <result property="wr_date" column="wr_date"/>
+        <result property="warehousing_type" column="warehousing_type"/>
+        <result property="keeping_date" column="keeping_date"/>
+        <association property="item" resultMap="selectGetListMapItem"/>
+    </resultMap>
+
+    <resultMap id="selectGetListMapItem" type="com.example.springreact.domain.Item">
+        <id property="item_code" column="item_code"/>
+        <result property="name" column="name"/>
+        <result property="volume" column="volume"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <!--코드별 수불부 조회-->
+    <select id="selectGetList" resultMap="selectGetListMap" parameterType="string">
     <![CDATA[
-		SELECT * FROM warehousing_record wr
-						  JOIN item i ON wr.item_code = i.item_code
-		WHERE warehousing_code LIKE '%'||#{code}||'%'
-]]>
+        SELECT wr.warehousing_code, i.item_code, wr.storage_code, wr.amount, wr.wr_date,  wr.warehousing_type, wr.keeping_date, i.type, i.name, i.volume
+        FROM warehousing_record wr
+        JOIN item i ON wr.item_code = i.item_code
+        WHERE warehousing_code LIKE '%'||#{code}||'%'
+        ]]>
+    </select>
+
+    <resultMap id="getListMap" type="com.example.springreact.domain.WarehousingRecord">
+        <id property="warehousing_code"  column="warehousing_code"/>
+        <result property="item_code"  column="item_code"/>
+        <result property="storage_code"  column="storage_code"/>
+        <result property="amount"  column="amount"/>
+        <result property="wr_date" column="wr_date"/>
+        <result property="warehousing_type" column="warehousing_type"/>
+        <result property="keeping_date" column="keeping_date"/>
+        <association property="item" resultMap="getListMapItem"/>
+    </resultMap>
+
+    <resultMap id="getListMapItem" type="com.example.springreact.domain.Item">
+        <id property="item_code" column="item_code"/>
+        <result property="name" column="name"/>
+        <result property="volume" column="volume"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <!--전체 조회-->
+    <select id="getList" resultMap="getListMap" parameterType="string">
+    <![CDATA[
+        SELECT wr.warehousing_code, i.item_code, wr.storage_code, wr.amount, wr.wr_date,  wr.warehousing_type, wr.keeping_date, i.type, i.name, i.volume
+        FROM warehousing_record wr
+                 JOIN item i ON wr.item_code = i.item_code
+        ]]>
+    </select>
+
+
+    <resultMap id="getGRListMap" type="com.example.springreact.domain.WarehousingRecord">
+        <id property="warehousing_code"  column="warehousing_code"/>
+        <result property="item_code"  column="item_code"/>
+        <result property="storage_code"  column="storage_code"/>
+        <result property="amount"  column="amount"/>
+        <result property="wr_date" column="wr_date"/>
+        <result property="warehousing_type" column="warehousing_type"/>
+        <result property="keeping_date" column="keeping_date"/>
+        <association property="item" resultMap="getGRListMapItem"/>
+    </resultMap>
+
+    <resultMap id="getGRListMapItem" type="com.example.springreact.domain.Item">
+        <id property="item_code" column="item_code"/>
+        <result property="name" column="name"/>
+        <result property="volume" column="volume"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <!--입고 조회-->
+    <select id="getGRList" resultMap="getGRListMap">
+        select * from goodsreceiptsview
+    </select>
+
+    <resultMap id="getGIListMap" type="com.example.springreact.domain.WarehousingRecord">
+        <id property="warehousing_code"  column="warehousing_code"/>
+        <result property="item_code"  column="item_code"/>
+        <result property="storage_code"  column="storage_code"/>
+        <result property="amount"  column="amount"/>
+        <result property="wr_date" column="wr_date"/>
+        <result property="warehousing_type" column="warehousing_type"/>
+        <result property="keeping_date" column="keeping_date"/>
+        <association property="item" resultMap="getGIListMapItem"/>
+    </resultMap>
+
+    <resultMap id="getGIListMapItem" type="com.example.springreact.domain.Item">
+        <id property="item_code" column="item_code"/>
+        <result property="name" column="name"/>
+        <result property="volume" column="volume"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <!--출고 조회-->
+    <select id="getGIList" resultMap="getGIListMap">
+        select * from goodsissueview
+    </select>
+
+
+    <resultMap id="getCurrentListMap" type="com.example.springreact.domain.WarehousingRecord">
+        <id property="warehousing_code"  column="warehousing_code"/>
+        <result property="item_code"  column="item_code"/>
+        <result property="storage_code"  column="storage_code"/>
+        <result property="amount"  column="amount"/>
+        <result property="wr_date" column="wr_date"/>
+        <result property="warehousing_type" column="warehousing_type"/>
+        <result property="keeping_date" column="keeping_date"/>
+        <association property="item" resultMap="getCurrentListMapItem"/>
+    </resultMap>
+
+    <resultMap id="getCurrentListMapItem" type="com.example.springreact.domain.Item">
+        <id property="item_code" column="item_code"/>
+        <result property="name" column="name"/>
+        <result property="volume" column="volume"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <!--현재 재고 수량-->
+    <select id="getCurrentList" resultMap="getCurrentListMap">
+    <![CDATA[
+        SELECT
+            wr.storage_code,
+            wr.item_code,
+            i.name AS name,
+            i.type,
+            i.volume,
+            SUM(CASE WHEN wr.warehousing_type = '입고' THEN wr.amount ELSE -wr.amount END) AS AMOUNT
+        FROM
+            warehousing_record wr
+                JOIN
+            item i ON wr.item_code = i.item_code
+        GROUP BY
+            wr.storage_code,
+            wr.item_code,
+            i.name,
+            i.type,
+            i.volume
+        ]]>
 </select>
+
+    <insert id="register" parameterType="com.example.springreact.domain.WarehousingRecord">
+        <selectKey order="BEFORE" keyProperty="warehousing_code" resultType="String">
+            SELECT #{warehousing_code}||'-'|| seq_warehousing_record.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO warehousing_record (
+        warehousing_code,
+        item_code,
+        storage_code,
+        warehousing_type,
+        wr_date,
+        amount,
+        keeping_date
+        )
+        VALUES (
+        #{warehousing_code},
+        #{item_code},
+        #{storage_code},
+        #{warehousing_type},
+        SYSDATE,
+        #{amount},
+        SYSDATE + 30
+        )
+    </insert>
+
+    <update id="update" parameterType="com.example.springreact.domain.WarehousingRecord">
+        UPDATE warehousing_record SET
+                                      item_code = #{item_code},
+                                      storage_code = #{storage_code},
+                                      warehousing_type = #{warehousing_type},
+                                      wr_date = #{wr_date},
+                                      amount = #{amount},
+                                      keeping_date = #{keeping_date}
+        WHERE warehousing_code = #{warehousing_code}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM warehousing_record WHERE warehousing_code = #{code}
+    </delete>
+
 </mapper>

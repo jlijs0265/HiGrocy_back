@@ -1,20 +1,15 @@
-package com.example.springreact.dto;
+package com.example.springreact.vo.RequestVO;
 
 import com.example.springreact.domain.Item;
 import com.example.springreact.domain.Storage;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.sql.Date;
-import java.util.List;
 
-@Data
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class WarehousingRecordDTO {
+@Getter
+public class WHListRequestVO {
 	//입출고 내역 코드
 	private String warehousing_code;
 	//품목 코드
@@ -33,5 +28,4 @@ public class WarehousingRecordDTO {
 	private Item item;
 	//창고 객체 리스트
 	private Storage storage;
-
 }

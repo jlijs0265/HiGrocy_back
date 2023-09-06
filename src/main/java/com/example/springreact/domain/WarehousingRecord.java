@@ -13,4 +13,6 @@ public class WarehousingRecord {
     private int amount;
     private Date wr_date;
     private String warehousing_type;
+    private Date keeping_date;
+    private Item item;
 }
