@@ -29,8 +29,10 @@ public class StorageServiceImpl implements StorageService {
 		Storage storage = modelMapper.map(storageDTO,Storage.class);
 
 		System.out.println("StorageServiceImpl : " + storage);
+		mapper.register(storage);
+		StorageDTO storageDto = modelMapper.map(storage,StorageDTO.class);
 
-		return mapper.register(storage);
+		return storageDto.getStorage_code();
 	}
 
 	@Override

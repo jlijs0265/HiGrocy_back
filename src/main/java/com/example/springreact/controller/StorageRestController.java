@@ -37,10 +37,7 @@ public class StorageRestController {
 		  ModelMapper modelMapper = new ModelMapper();
 		  StorageDTO storageDTO = modelMapper.map(storegeRequestVO,StorageDTO.class);
 		  System.out.println("storageDTO : " + storageDTO);
-
-			/* return new ResponseEntity<>("success",HttpStatus.OK); */
-		  return service.register(storageDTO) ==1 ? new ResponseEntity<>("success",
-		  HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		  return ResponseEntity.status(HttpStatus.OK).body(service.register(storageDTO)+"");
 		  }
 
 	@PutMapping(value="/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
