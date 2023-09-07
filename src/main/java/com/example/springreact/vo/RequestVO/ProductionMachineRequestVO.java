@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ProductionMachineRequestVO {
+	int machine_code;
 	String type;
 	int gas_emissions;
 	int energy_usage;

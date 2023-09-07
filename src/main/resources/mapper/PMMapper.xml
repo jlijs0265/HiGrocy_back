@@ -12,6 +12,20 @@
 
     </insert>
 
+    <select id="findAll" resultType="com.example.springreact.domain.ProductionMachine">
+        SELECT * FROM production_machine
+    </select>
+
+    <update id="update" parameterType="com.example.springreact.domain.ProductionMachine">
+        UPDATE production_machine SET type = #{type}, gas_emissions = #{gas_emissions}, energy_usage= #{energy_usage}
+        WHERE machine_code = #{machine_code}
+
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE production_machine WHERE machine_code = #{machine_code}
+    </delete>
+
 
 
 </mapper>
