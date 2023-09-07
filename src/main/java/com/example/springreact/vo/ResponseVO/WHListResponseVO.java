@@ -19,13 +19,15 @@ public class WHListResponseVO {
 	//입출고 유형
 	private String warehousing_type;
 	//입출고 날짜
-	private Date wr_date;
+	private String wr_date;
 	//재고 수량
 	private int amount;
 	//유통기한
-	private Date keeping_date;
+	private String keeping_date;
 	//아이템 객체 리스트
 	private Item item;
 	//창고 객체 리스트
 	private Storage storage;
+
+
 }

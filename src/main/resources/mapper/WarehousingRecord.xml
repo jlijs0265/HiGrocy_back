@@ -187,4 +187,7 @@
         DELETE FROM warehousing_record WHERE warehousing_code = #{code}
     </delete>
 
+    <select id="getTotal">
+        SELECT COUNT(*) FROM warehousing_record
+    </select>
 </mapper>

@@ -16,6 +16,10 @@ public class StorageResponseVO {
 	private String manager;
 	private String max_loadage;
 
+	public StorageResponseVO(int storage_code) {
+		this.storage_code = storage_code;
+	}
+
 	public StorageResponseVO(StorageDTO item) {
 		this.storage_code = item.getStorage_code();
 		this.name = getName();

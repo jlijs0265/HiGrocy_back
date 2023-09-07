@@ -2,6 +2,7 @@ package com.example.springreact.service;
 
 import com.example.springreact.domain.Storage;
 import com.example.springreact.domain.WarehousingRecord;
+import com.example.springreact.dto.Criteria;
 import com.example.springreact.dto.StorageDTO;
 import com.example.springreact.dto.WarehousingRecordDTO;
 import com.example.springreact.mapper.WarehousingRecordMapper;
@@ -35,43 +36,17 @@ public class WarehousingRecordServiceImpl implements WarehousingRecordService {
     }
 
     @Override
-    public List<WarehousingRecordDTO> getList() {
-        System.out.println(wh_mapper.getList());
-        List<WarehousingRecordDTO> GRList = new ArrayList<>(); //입고 재고
-        List<WarehousingRecordDTO> GIList = new ArrayList<>(); //출고 재고
-        List<WarehousingRecordDTO> CurrentList = new ArrayList<>(); // 현 재고
+    public List<WarehousingRecordDTO> getList(Criteria criteria) {
+        System.out.println(wh_mapper.getList(criteria));
 
         //Domain => DTO
         ModelMapper modelMapper = new ModelMapper();
-        List<WarehousingRecordDTO> whListDto = wh_mapper.getList()
+        List<WarehousingRecordDTO> whListDto = wh_mapper.getList(criteria)
                 .stream()
                 .map(item -> modelMapper.map(item, WarehousingRecordDTO.class))
                 .collect(Collectors.toList());
 
-        System.out.println(whListDto);
-        //입고 출고 분리
-        for(int i = 0; i < whListDto.size(); i++){
-            if(whListDto.get(i).getWarehousing_type().equals("입고")){
-                GRList.add(whListDto.get(i));
-            }
-            else if(whListDto.get(i).getWarehousing_type().equals("출고")){
-                GIList.add(whListDto.get(i));
-            }
-        }
-
-        // CurrentList 초기화 및 계산
-        CurrentList = new ArrayList<>(whListDto);
-        for (int j = 0; j < CurrentList.size(); j++) {
-            for (WarehousingRecordDTO giItem : GIList) {
-                if (CurrentList.get(j).getItem().getItem_code() == giItem.getItem_code()) {
-                    CurrentList.get(j).setAmount(CurrentList.get(j).getAmount() - giItem.getAmount());
-                }
-            }
-        }
-
-        System.out.println("GRList : "+GRList);
-        System.out.println("GIList : "+GIList);
-        System.out.println("CurrentList : " + CurrentList);
+        System.out.println("WH :"+whListDto);
 
         return whListDto;
     }
@@ -133,5 +108,11 @@ public class WarehousingRecordServiceImpl implements WarehousingRecordService {
         ModelMapper mapper = new ModelMapper();
         WarehousingRecord warehousingRecord = mapper.map(whDto,WarehousingRecord.class);
         return wh_mapper.update(warehousingRecord);
+    }
+
+    @Override
+    public int getTotal() {
+
+        return wh_mapper.getTotal();
     }
 }
