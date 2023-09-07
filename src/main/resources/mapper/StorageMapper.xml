@@ -12,7 +12,13 @@
 
 	<select id="getList" resultType="com.example.springreact.domain.Storage">
 		<![CDATA[
-  		select * from storage where storage_code>0
+		select r.storage_code, r.name, r.location, r.manager, r.max_loadage
+		from (
+				 select ROWNUM R, storage_code, name, location, manager, max_loadage
+				 from storage
+				 where ROWNUM <= #{pageNum} * #{amount}
+			 ) r
+		where R > (#{pageNum} -1) * #{amount}
   		]]>
 	</select>
 	

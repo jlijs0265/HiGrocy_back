@@ -57,7 +57,7 @@ public class StorageServiceImpl implements StorageService {
 	@Override
 	public List<StorageDTO> getList(Criteria criteria) {
 		ModelMapper modelMapper = new ModelMapper();
-		List<StorageDTO> storageList = mapper.getList()
+		List<StorageDTO> storageList = mapper.getList(criteria)
 				.stream()
 				.map(item -> modelMapper.map(item, StorageDTO.class))
 				.collect(Collectors.toList());

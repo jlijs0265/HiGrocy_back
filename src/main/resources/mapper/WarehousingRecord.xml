@@ -51,11 +51,20 @@
     </resultMap>
 
     <!--전체 조회-->
-    <select id="getList" resultMap="getListMap" parameterType="string">
+    <select id="getList" resultMap="getListMap" parameterType="Integer">
     <![CDATA[
-        SELECT wr.warehousing_code, i.item_code, wr.storage_code, wr.amount, wr.wr_date,  wr.warehousing_type, wr.keeping_date, i.type, i.name, i.volume
-        FROM warehousing_record wr
-                 JOIN item i ON wr.item_code = i.item_code
+        SELECT
+            w.warehousing_code,w.item_code,w.amount,
+            w.wr_date,w.warehousing_type,w.keeping_date,w.type,w.name,w.volume, w.storage_code
+        FROM (
+                 SELECT
+                     ROWNUM ,wr.warehousing_code,i.item_code,wr.storage_code,wr.amount,
+                     wr.wr_date,wr.warehousing_type,wr.keeping_date,i.type,i.name,i.volume
+                 FROM warehousing_record wr
+                          JOIN item i ON wr.item_code = i.item_code
+                 WHERE ROWNUM <= #{pageNum} * #{amount}
+             ) w
+        WHERE ROWNUM > (#{pageNum} -1) * #{amount}
         ]]>
     </select>
 
@@ -108,7 +117,7 @@
 
 
     <resultMap id="getCurrentListMap" type="com.example.springreact.domain.WarehousingRecord">
-        <id property="warehousing_code"  column="warehousing_code"/>
+<!--        <id property="warehousing_code"  column="warehousing_code"/>-->
         <result property="item_code"  column="item_code"/>
         <result property="storage_code"  column="storage_code"/>
         <result property="amount"  column="amount"/>
@@ -128,23 +137,19 @@
     <!--현재 재고 수량-->
     <select id="getCurrentList" resultMap="getCurrentListMap">
     <![CDATA[
-        SELECT
-            wr.storage_code,
-            wr.item_code,
-            i.name AS name,
-            i.type,
-            i.volume,
-            SUM(CASE WHEN wr.warehousing_type = '입고' THEN wr.amount ELSE -wr.amount END) AS AMOUNT
-        FROM
-            warehousing_record wr
+        select c.item_code, c.name, c.type, c.volume, c.amount from(
+            select ROWNUM, item_code, name, type, volume, amount
+                from  (SELECT
+                wr.item_code,i.name AS name,i.type,i.volume,
+                    SUM(CASE WHEN wr.warehousing_type = '입고' THEN wr.amount ELSE -wr.amount END) AS AMOUNT
+                FROM
+                    warehousing_record wr
                 JOIN
-            item i ON wr.item_code = i.item_code
-        GROUP BY
-            wr.storage_code,
-            wr.item_code,
-            i.name,
-            i.type,
-            i.volume
+                    item i ON wr.item_code = i.item_code
+                GROUP BY
+                    wr.item_code,i.name,i.type,i.volume)
+                where ROWNUM <= #{pageNum} * #{amount}) c
+        where ROWNUM > (#{pageNum} -1) * #{amount}
         ]]>
 </select>
 
@@ -187,4 +192,7 @@
         DELETE FROM warehousing_record WHERE warehousing_code = #{code}
     </delete>
 
+    <select id="getTotal">
+        SELECT COUNT(*) FROM warehousing_record
+    </select>
 </mapper>

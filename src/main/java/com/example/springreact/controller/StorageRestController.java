@@ -31,16 +31,13 @@ public class StorageRestController {
 	private StorageService service;
 
 	  @PostMapping(value="/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
-	  public ResponseEntity<String> registerStorage(@RequestBody StorageRequestVO storegeRequestVO){
-
-		  System.out.println("Storage register..........");
-		  System.out.println("vo입니다 : "+storegeRequestVO);
+	  public ResponseEntity<Object> registerStorage(@RequestBody StorageRequestVO storegeRequestVO){
 
 		  //VO => DTO 변환
 		  ModelMapper modelMapper = new ModelMapper();
 		  StorageDTO storageDTO = modelMapper.map(storegeRequestVO,StorageDTO.class);
 		  System.out.println("storageDTO : " + storageDTO);
-		  return ResponseEntity.status(HttpStatus.OK).body(service.register(storageDTO)+"");
+		  return ResponseEntity.status(HttpStatus.OK).body(new StorageResponseVO(service.register(storageDTO)));
 		  }
 
 	@PutMapping(value="/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -81,11 +78,10 @@ public class StorageRestController {
 				))
 				.collect(Collectors.toList());
 		System.out.println("StorageResponseVOList : "+ storageResponseVOList);
-		PageDto pageDto = new PageDto(5, service.getTotal(), criteria);
+		PageDto pageDto = new PageDto(8, service.getTotal(), criteria);
 		System.out.println("Storage Page : "+ pageDto);
 		ResponseVO response = new ResponseVO(storageResponseVOList, pageDto);
 		return storageResponseVOList != null ? ResponseEntity.status(HttpStatus.OK).body(response)
 				: ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//		return new ResponseEntity<>(storageResponseVOList, HttpStatus.OK);
 	}
 }

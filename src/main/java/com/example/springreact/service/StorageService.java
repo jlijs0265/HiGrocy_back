@@ -12,6 +12,6 @@ public interface StorageService {
 	int update(StorageDTO storageDTO);
 	int delete(int code);
 	StorageDTO get(int code);
-	List<StorageDTO> getList(Criteria criteria);
+	List<StorageDTO> getList(Criteria creCriteria);
 	public int getTotal();
 }

@@ -1,9 +1,13 @@
 package com.example.springreact.controller;
 
+import com.example.springreact.dto.Criteria;
+import com.example.springreact.dto.PageDto;
+import com.example.springreact.dto.StorageDTO;
 import com.example.springreact.dto.WarehousingRecordDTO;
 import com.example.springreact.service.WarehousingRecordService;
 import com.example.springreact.service.WarehousingRecordServiceImpl;
 import com.example.springreact.vo.RequestVO.WHListRequestVO;
+import com.example.springreact.vo.ResponseVO.ResponseVO;
 import com.example.springreact.vo.ResponseVO.StorageResponseVO;
 import com.example.springreact.vo.ResponseVO.WHListResponseVO;
 import lombok.AllArgsConstructor;
@@ -15,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,14 +43,26 @@ public class WHRestController {
     }
 
     @GetMapping("/wh/list")
-    public ResponseEntity<List<WHListResponseVO>> getList() {
+    public ResponseEntity<ResponseVO> getList(@RequestParam(value = "page", defaultValue = "1") String page) {
+
+        Criteria criteria = new Criteria();
+        if(page != null) {
+            criteria.setPageNum(Integer.parseInt(page));
+        }
+        List<WarehousingRecordDTO> warehousingRecordDTOS  = wh_service.getList(criteria);
+
         ModelMapper mapper = new ModelMapper();
-        List<WHListResponseVO> resVO = wh_service.getList()
+        List<WHListResponseVO> resVO = warehousingRecordDTOS
                 .stream()
                 .map(item -> mapper.map(item,WHListResponseVO.class))
                 .collect(Collectors.toList());
         System.out.println("resVO : " + resVO);
-        return ResponseEntity.ok(resVO);
+
+        PageDto pageDto = new PageDto(8, wh_service.getTotal(), criteria);
+        ResponseVO response = new ResponseVO(resVO, pageDto);
+        System.out.println(resVO);
+        return warehousingRecordDTOS != null ? ResponseEntity.status(HttpStatus.OK).body(response)
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 
     @GetMapping("/wh/GRlist")
@@ -71,15 +88,26 @@ public class WHRestController {
     }
 
     @GetMapping("wh/CurrentList")
-    public ResponseEntity<List<WHListResponseVO>> getCurrentList(){
+    public ResponseEntity<ResponseVO> getCurrentList(@RequestParam(value = "page", defaultValue = "1") String page){
+
+        Criteria criteria = new Criteria();
+        if(page != null) {
+            criteria.setPageNum(Integer.parseInt(page));
+        }
+        /*일단 Pagenation 사용 안함*/
         ModelMapper mapper = new ModelMapper();
-        List<WHListResponseVO> resVO = wh_service.getCurrentList()
+        List<WarehousingRecordDTO> CurrentRecordDTOS  = wh_service.getCurrentList(criteria);
+        List<WHListResponseVO> resVO = CurrentRecordDTOS
                 .stream()
                 .map(item -> mapper.map(item,WHListResponseVO.class))
                         .collect(Collectors.toList());
 
+        PageDto pageDto = new PageDto(8, wh_service.getTotal(), criteria);
+        ResponseVO response = new ResponseVO(resVO, pageDto);
+
         System.out.println("resVO : " + resVO);
-        return ResponseEntity.ok(resVO);
+        return CurrentRecordDTOS != null ? ResponseEntity.status(HttpStatus.OK).body(response)
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 
     @PostMapping("/wh")
@@ -98,8 +126,8 @@ public class WHRestController {
         return ResponseEntity.ok(wh_service.update(whDto));
     }
 
-    @DeleteMapping("wh")
-    public ResponseEntity<Integer> delete(@RequestBody String code){
+    @DeleteMapping("wh/{code}")
+    public ResponseEntity<Integer> delete(@PathVariable String code){
         return ResponseEntity.ok(wh_service.delete(code));
     }
 }
