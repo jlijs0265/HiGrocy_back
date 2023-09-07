@@ -1,30 +1,22 @@
 package com.example.springreact.controller;
 
-import com.example.springreact.domain.ProductionMachine;
 import com.example.springreact.dto.*;
 import com.example.springreact.service.PMService;
-import com.example.springreact.service.RawMaterialService;
+import com.example.springreact.vo.RequestVO.PMDetailsRequestVO;
 import com.example.springreact.vo.RequestVO.ProductionMachineRequestVO;
-import com.example.springreact.vo.RequestVO.RawMaterialRequestVO;
+import com.example.springreact.vo.ResponseVO.PMDetailResponseVO;
 import com.example.springreact.vo.ResponseVO.ProductionMachineResponseVO;
-import com.example.springreact.vo.ResponseVO.RawMaterialResponseVO;
-import com.example.springreact.vo.ResponseVO.RawResponseVO;
 import lombok.extern.java.Log;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Log
 public class PMController {
-
     private PMService pmService;
 
     public PMController(PMService pmService) {
@@ -38,7 +30,7 @@ public class PMController {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         ProductionMachineDTO productionMachineDTO = mapper.map(productionMachineRequestVO, ProductionMachineDTO.class);
-        productionMachineDTO = pmService.save(productionMachineDTO);
+        productionMachineDTO = pmService.PMsave(productionMachineDTO);
         return ResponseEntity.ok().body(new ProductionMachineResponseVO(productionMachineDTO.getMachine_code()));
 
     }
@@ -46,7 +38,7 @@ public class PMController {
 
     @GetMapping(value = {"/pm"})
     public ResponseEntity<Object> getListPM() {
-        List<ProductionMachineDTO> list = pmService.findAll();
+        List<ProductionMachineDTO> list = pmService.PMfindAll();
         return ResponseEntity.ok().body(new ProductionMachineResponseVO(list));
     }
     @PutMapping("/pm")
@@ -55,22 +47,56 @@ public class PMController {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         ProductionMachineDTO productionMachineDTO = mapper.map(productionMachineRequestVO, ProductionMachineDTO.class);
-        productionMachineDTO = pmService.update(productionMachineDTO);
+        productionMachineDTO = pmService.PMupdate(productionMachineDTO);
         return ResponseEntity.ok().body("성공");
     }
 
     @DeleteMapping("/pm/{machine_code}")
     public ResponseEntity<Object> deletePM(@PathVariable int machine_code) {
-        pmService.delete(machine_code);
+        pmService.PMdelete(machine_code);
+        return ResponseEntity.ok().body("성공");
+    }
+
+    @PostMapping("/pmDetail")
+    public ResponseEntity<Object> registerPMD(@RequestBody PMDetailsRequestVO pmDetailsRequestVO) {
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        PMDetailDTO pmDetailDTO = mapper.map(pmDetailsRequestVO, PMDetailDTO.class);
+        pmDetailDTO = pmService.PMDsave(pmDetailDTO);
+        return ResponseEntity.ok().body(new PMDetailResponseVO(pmDetailDTO.getPm_detail_code()));
+
+    }
+
+
+    @GetMapping(value = {"/pmDetail"})
+    public ResponseEntity<Object> getListPMD(@RequestParam(value = "page", defaultValue = "1") String page,
+                                             @RequestParam(value = "searchType", defaultValue = "name") String searchType,
+                                             @RequestParam(value = "searchContent", defaultValue = "") String searchContent ) {
+        Criteria criteria = new Criteria();
+        criteria.setPageNum(Integer.parseInt(page));
+        criteria.setSearchType(searchType);
+        criteria.setSearchContent(searchContent);
+
+        List<PMDetailDTO> list = pmService.PMDfindAll(criteria);
+
+        PageDto pageDto = new PageDto(5, pmService.getTotalRaw(), criteria);
+        return ResponseEntity.ok().body(new ProductionMachineResponseVO(list, pageDto));
+    }
+    @PutMapping("/pmDetail")
+    public ResponseEntity<Object> updatePMD(@RequestBody PMDetailsRequestVO productionMachineRequestVO) {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        PMDetailDTO productionMachineDTO = mapper.map(productionMachineRequestVO, PMDetailDTO.class);
+        productionMachineDTO = pmService.PMDupdate(productionMachineDTO);
+        return ResponseEntity.ok().body("성공");
+    }
+
+    @DeleteMapping("/pmDetail/{machine_code}")
+    public ResponseEntity<Object> deletePMD(@PathVariable int machine_code) {
+        pmService.PMDdelete(machine_code);
         return ResponseEntity.ok().body("성공");
     }
 }
 
-//
-//    // 삭제
-//    @DeleteMapping("/pm/{pms_code}")
-//    public void deleteRawMaterial(@PathVariable int pms_code) {
-//        service.deleteRawMaterial(pms_code);
-//    }
-//
-//}

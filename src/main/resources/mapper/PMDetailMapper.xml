@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springreact.mapper.PMDetailMapper">
+
+    <insert id="save" parameterType="com.example.springreact.domain.PMDetails">
+        <selectKey resultType="String" keyProperty="pm_detail_code" order="BEFORE">
+            SELECT seq_pm_detail_code.nextval FROM dual
+        </selectKey>
+         INSERT INTO PM_Detail(pm_detail_code, machine_code, name, factory_name, location) VALUES( #{pm_detail_code}, #{machine_code}, #{name}, #{factory_name}, #{location})
+
+    </insert>
+
+    <select id="findAll" resultType="com.example.springreact.domain.PMDetails">
+        <![CDATA[
+SELECT pm_detail_code, machine_code, name, factory_name, location
+    FROM
+            (SELECT ROWNUM R, pm_detail_code, machine_code, name, factory_name, location FROM PM_Detail
+             WHERE ROWNUM <= #{pageNum} * #{amount}
+            )
+WHERE R > (#{pageNum} -1) * #{amount}
+        ]]>
+    </select>
+
+    <update id="update" parameterType="com.example.springreact.domain.PMDetails">
+        UPDATE PM_Detail SET machine_code = #{machine_code}, name = #{name}, factory_name= #{factory_name}, location= #{location}
+        WHERE pm_detail_code = #{pm_detail_code}
+
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE PM_Detail WHERE pm_detail_code = #{pm_detail_code}
+    </delete>
+    <select id="getTotalRaw">
+        SELECT COUNT(*) FROM PM_Detail
+    </select>
+
+
+</mapper>
