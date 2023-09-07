@@ -37,7 +37,7 @@ public class WarehousingRecordServiceImpl implements WarehousingRecordService {
 
     @Override
     public List<WarehousingRecordDTO> getList(Criteria criteria) {
-//        System.out.println(wh_mapper.getList(criteria));
+        System.out.println(wh_mapper.getList(criteria));
 
         //Domain => DTO
         ModelMapper modelMapper = new ModelMapper();
