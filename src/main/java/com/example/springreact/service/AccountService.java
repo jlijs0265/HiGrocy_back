@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface AccountService {
-    public List<Account> getListAll();
+    public List<AccountDTO> getListAll();
     public Account getListOne(int account_code);
-    public void insert(Account account);
-    public int update(Account account);
+    public void insert(AccountDTO accountDTO);
+    public int update(AccountDTO accountDTO);
     public int delete(int account_code);
 
-    public List<Account> getList(Criteria criteria);
+    public List<AccountDTO> getList(Criteria criteria);
 
     int getTotal();
 

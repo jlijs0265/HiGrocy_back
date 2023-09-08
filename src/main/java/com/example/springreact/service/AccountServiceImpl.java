@@ -1,7 +1,6 @@
 package com.example.springreact.service;
 
 import com.example.springreact.domain.Account;
-import com.example.springreact.domain.Storage;
 import com.example.springreact.dto.AccountDTO;
 import com.example.springreact.dto.Criteria;
 import com.example.springreact.mapper.AccountMapper;
@@ -18,7 +17,7 @@ public class AccountServiceImpl implements AccountService{
     private AccountMapper mapper;
 
     @Override
-    public List<Account> getListAll() {
+    public List<AccountDTO> getListAll() {
         return mapper.getListAll();
     }
 
@@ -28,15 +27,15 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public void insert(Account account) {
-        mapper.insert(account);
-        System.out.println("AccountServiceImpl : " + account);
+    public void insert(AccountDTO accountDTO) {
+        mapper.insert(accountDTO);
+        System.out.println("AccountServiceImpl : " + accountDTO);
     }
 
     @Override
-    public int update(Account account) {
-        System.out.println("AccountServiceImpl : " + account);
-        return mapper.update(account);
+    public int update(AccountDTO accountDTO) {
+        System.out.println("AccountServiceImpl : " + accountDTO);
+        return mapper.update(accountDTO);
     }
 
     @Override
@@ -45,12 +44,12 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public List<Account> getList(Criteria criteria) {
+    public List<AccountDTO> getList(Criteria criteria) {
         ModelMapper modelMapper = new ModelMapper();
-        List<Account> accountList = mapper.getList(criteria)
+        List<AccountDTO> accountList = mapper.getList(criteria)
                 .stream()
-                .map(item -> modelMapper.map(item, Account.class))
-                .collect(Account.toList());
+                .map(item -> modelMapper.map(item, AccountDTO.class))
+                .collect(AccountDTO.toList());
 
         return accountList;
     }

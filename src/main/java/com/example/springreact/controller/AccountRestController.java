@@ -16,7 +16,7 @@ public class AccountRestController {
     };
 
     @GetMapping("/account")
-    public List<Account> getListAll(){
+    public List<AccountDTO> getListAll(){
         return service.getListAll();
     }
 
@@ -26,14 +26,14 @@ public class AccountRestController {
     }
 
     @PostMapping("/account")
-    public void insert(@RequestBody Account account){
-        service.insert(account);
+    public void insert(@RequestBody AccountDTO accountDTO){
+        service.insert(accountDTO);
     }
 
     @PutMapping("/account/{account_code}")
-    public int update(@PathVariable int account_code, @RequestBody Account account){
-        account.setAccount_code(account_code);
-        return service.update(account);
+    public int update(@PathVariable int account_code, @RequestBody AccountDTO accountDTO){
+        accountDTO.setAccount_code(account_code);
+        return service.update(accountDTO);
     }
 
     @DeleteMapping("/account/{account_code}")
