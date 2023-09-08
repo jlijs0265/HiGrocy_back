@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -49,7 +50,7 @@ public class AccountServiceImpl implements AccountService{
         List<AccountDTO> accountList = mapper.getList(criteria)
                 .stream()
                 .map(item -> modelMapper.map(item, AccountDTO.class))
-                .collect(AccountDTO.toList());
+                .collect(Collectors.toList());
 
         return accountList;
     }
