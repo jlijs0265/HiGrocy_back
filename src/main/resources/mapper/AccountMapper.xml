@@ -14,8 +14,15 @@
 
     <select id="getListAll" resultType="com.example.springreact.domain.Account">
 		<![CDATA[
-            select * from account where account_code > 0
+            select r.account_code, r.name, r.phone_number
+            from (
+                select ROWNUM R, account_code, name, phone_number
+                from account
+                where ROWNUM <= #{pageNum} * #{amount}
+                 )r
+            where R > (#{pageNum} -1) * #{amount}
         ]]>
+
 	</select>
 
 
@@ -35,5 +42,6 @@
     <delete id="delete" parameterType="int">
         delete from account where account_code = #{account_code}
     </delete>
+
 
 </mapper>
