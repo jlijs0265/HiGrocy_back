@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RawResponseVO {
+public class ResponseVO<T> {
 
-    List<RawMaterialResponseVO> list;
+    List<T> list;
     PageDto pageDto;
 }

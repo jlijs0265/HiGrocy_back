@@ -7,7 +7,7 @@ import com.example.springreact.dto.PageDto;
 import com.example.springreact.service.RawMaterialService;
 import com.example.springreact.vo.RequestVO.RawMaterialRequestVO;
 import com.example.springreact.vo.ResponseVO.RawMaterialResponseVO;
-import com.example.springreact.vo.ResponseVO.RawResponseVO;
+import com.example.springreact.vo.ResponseVO.ResponseVO;
 import lombok.extern.java.Log;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -45,18 +45,14 @@ public class RawMaterialController {
     }
 
     @GetMapping(value = {"/raw_material"})
-    public ResponseEntity<RawResponseVO> getRawMaterialList(@RequestParam(value = "page", defaultValue = "1") String page,
-                                                            @RequestParam(value = "searchType", defaultValue = "name") String searchType,
-                                                            @RequestParam(value = "searchContent", defaultValue = "") String searchContent ) {
-        log.info("--" + page + "--" +  searchType + "--" +  searchContent );
+    public ResponseEntity<ResponseVO> getRawMaterialList(@RequestParam("page") String page) {
         Criteria criteria = new Criteria();
-        criteria.setPageNum(Integer.parseInt(page));
-        criteria.setSearchType(searchType);
-        criteria.setSearchContent(searchContent);
-
+        if(page != null) {
+            criteria.setPageNum(Integer.parseInt(page));
+        }
         List<RawMaterialResponseVO> rawMaterialResponseVOList = service.getRawMaterialList(criteria);
         PageDto pageDto = new PageDto(5, service.getTotalRaw(), criteria);
-        RawResponseVO response = new RawResponseVO(rawMaterialResponseVOList, pageDto);
+        ResponseVO response = new ResponseVO(rawMaterialResponseVOList, pageDto);
         return rawMaterialResponseVOList != null ? ResponseEntity.status(HttpStatus.OK).body(response) : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 

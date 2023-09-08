@@ -1,9 +1,12 @@
 package com.example.springreact.controller;
 
 import com.example.springreact.domain.Storage;
+import com.example.springreact.dto.Criteria;
+import com.example.springreact.dto.PageDto;
 import com.example.springreact.dto.StorageDTO;
 import com.example.springreact.service.StorageService;
 import com.example.springreact.vo.RequestVO.StorageRequestVO;
+import com.example.springreact.vo.ResponseVO.ResponseVO;
 import com.example.springreact.vo.ResponseVO.StorageResponseVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -28,16 +31,13 @@ public class StorageRestController {
 	private StorageService service;
 
 	  @PostMapping(value="/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
-	  public ResponseEntity<String> registerStorage(@RequestBody StorageRequestVO storegeRequestVO){
-
-		  System.out.println("Storage register..........");
-		  System.out.println("vo입니다 : "+storegeRequestVO);
+	  public ResponseEntity<Object> registerStorage(@RequestBody StorageRequestVO storegeRequestVO){
 
 		  //VO => DTO 변환
 		  ModelMapper modelMapper = new ModelMapper();
 		  StorageDTO storageDTO = modelMapper.map(storegeRequestVO,StorageDTO.class);
 		  System.out.println("storageDTO : " + storageDTO);
-		  return ResponseEntity.status(HttpStatus.OK).body(service.register(storageDTO)+"");
+		  return ResponseEntity.status(HttpStatus.OK).body(new StorageResponseVO(service.register(storageDTO)));
 		  }
 
 	@PutMapping(value="/storage", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -61,8 +61,13 @@ public class StorageRestController {
 	}
 
 	@GetMapping("/storage/list")
-	public ResponseEntity<List<StorageResponseVO>> getStorageList() {
-		List<StorageDTO> storageDTOList = service.getList();
+	public ResponseEntity<ResponseVO> getStorageList(@RequestParam(value = "page", defaultValue = "1") String page) {
+		Criteria criteria = new Criteria();
+		if(page != null) {
+			criteria.setPageNum(Integer.parseInt(page));
+		}
+		List<StorageDTO> storageDTOList = service.getList(criteria);
+
 		List<StorageResponseVO> storageResponseVOList = storageDTOList.stream()
 				.map(dto -> new StorageResponseVO(
 						dto.getStorage_code(),
@@ -73,6 +78,10 @@ public class StorageRestController {
 				))
 				.collect(Collectors.toList());
 		System.out.println("StorageResponseVOList : "+ storageResponseVOList);
-		return new ResponseEntity<>(storageResponseVOList, HttpStatus.OK);
+		PageDto pageDto = new PageDto(8, service.getTotal(), criteria);
+		System.out.println("Storage Page : "+ pageDto);
+		ResponseVO response = new ResponseVO(storageResponseVOList, pageDto);
+		return storageResponseVOList != null ? ResponseEntity.status(HttpStatus.OK).body(response)
+				: ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 	}
 }

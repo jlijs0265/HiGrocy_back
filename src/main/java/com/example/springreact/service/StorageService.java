@@ -1,6 +1,7 @@
 package com.example.springreact.service;
 
 import com.example.springreact.domain.Storage;
+import com.example.springreact.dto.Criteria;
 import com.example.springreact.dto.StorageDTO;
 
 
@@ -11,5 +12,6 @@ public interface StorageService {
 	int update(StorageDTO storageDTO);
 	int delete(int code);
 	StorageDTO get(int code);
-	List<StorageDTO> getList();
+	List<StorageDTO> getList(Criteria creCriteria);
+	public int getTotal();
 }

@@ -1,4 +1,4 @@
-package com.example.springreact.vo.ResponseVO;
+package com.example.springreact.vo.RequestVO;
 
 import com.example.springreact.domain.Item;
 import com.example.springreact.domain.Storage;
@@ -8,8 +8,8 @@ import java.sql.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class WHListResponseVO {
+@Getter
+public class WHListRequestVO {
 	//입출고 내역 코드
 	private String warehousing_code;
 	//품목 코드
@@ -19,15 +19,13 @@ public class WHListResponseVO {
 	//입출고 유형
 	private String warehousing_type;
 	//입출고 날짜
-	private String wr_date;
+	private Date wr_date;
 	//재고 수량
 	private int amount;
 	//유통기한
-	private String keeping_date;
+	private Date keeping_date;
 	//아이템 객체 리스트
 	private Item item;
 	//창고 객체 리스트
 	private Storage storage;
-
-
 }

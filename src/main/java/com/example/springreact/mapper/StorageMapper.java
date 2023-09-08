@@ -1,6 +1,7 @@
 package com.example.springreact.mapper;
 
 import com.example.springreact.domain.Storage;
+import com.example.springreact.dto.Criteria;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface StorageMapper {
 	//단일 조회
 	public Storage get(int code);
 	//전체 조회
-	public List<Storage> getList();
+	public List<Storage> getList(Criteria criteria);
 
+	int getTotal();
 }
