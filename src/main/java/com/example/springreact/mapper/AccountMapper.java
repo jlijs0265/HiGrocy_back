@@ -1,6 +1,7 @@
 package com.example.springreact.mapper;
 
 import com.example.springreact.domain.Account;
+import com.example.springreact.dto.Criteria;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,5 +13,9 @@ public interface AccountMapper {
     public void insert(Account account);
     public int update(Account account);
     public int delete(int account_code);
+
+    public List<Account> getList(Criteria criteria);
+
+    int getTotal();
 
 }

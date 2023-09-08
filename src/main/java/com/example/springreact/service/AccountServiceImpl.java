@@ -3,6 +3,7 @@ package com.example.springreact.service;
 import com.example.springreact.domain.Account;
 import com.example.springreact.domain.Storage;
 import com.example.springreact.dto.AccountDTO;
+import com.example.springreact.dto.Criteria;
 import com.example.springreact.mapper.AccountMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,21 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public int delete(int account_code) {
         return mapper.delete(account_code);
+    }
+
+    @Override
+    public List<Account> getList(Criteria criteria) {
+        ModelMapper modelMapper = new ModelMapper();
+        List<Account> accountList = mapper.getList(criteria)
+                .stream()
+                .map(item -> modelMapper.map(item, Account.class))
+                .collect(Account.toList());
+
+        return accountList;
+    }
+
+    @Override
+    public int getTotal() {
+        return mapper.getTotal();
     }
 }

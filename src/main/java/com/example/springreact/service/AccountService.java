@@ -2,6 +2,7 @@ package com.example.springreact.service;
 
 import com.example.springreact.domain.Account;
 import com.example.springreact.dto.AccountDTO;
+import com.example.springreact.dto.Criteria;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,5 +15,9 @@ public interface AccountService {
     public void insert(Account account);
     public int update(Account account);
     public int delete(int account_code);
+
+    public List<Account> getList(Criteria criteria);
+
+    int getTotal();
 
 }
