@@ -5,7 +5,85 @@
 <mapper namespace="com.example.springreact.mapper.RawMaterialMapper">
 
     <insert id="registerItem" parameterType="com.example.springreact.domain.Item">
-        INSERT INTO item(item_code, type, name, volume) VALUES( #{item_code}, #{type}, #{name}, #{volume} )
+        INSERT INTO item(item_code, type, name, volume) VALUES( seq_item.nextval, #{type}, #{name}, #{volume} )
+        <selectKey resultType="int" keyProperty="item_code" order="AFTER">
+            SELECT seq_item.CURRVAL FROM dual
+        </selectKey>
     </insert>
+
+    <insert id="registerRawMaterial" parameterType="com.example.springreact.domain.RawMaterials">
+        INSERT INTO raw_materials(raw_materials_code, item_code, raw_type, renewability, unit, standard_quantity, origin)
+        VALUES(#{item_code}, #{item_code}, #{raw_type}, #{renewability}, #{unit}, #{standard_quantity}, #{origin} )
+    </insert>
+
+    <resultMap id="rawMap" type="com.example.springreact.dto.RawMaterialDTO">
+        <id property="raw_materials_code" column="raw_materials_code" />
+        <result property="raw_type" column="raw_type" />
+        <result property="renewability" column="renewability" />
+        <result property="unit" column="unit" />
+        <result property="standard_quantity" column="standard_quantity" />
+        <result property="origin" column="origin" />
+        <association property="item" resultMap="itemMap"/>
+    </resultMap>
+
+    <resultMap id="itemMap" type="com.example.springreact.domain.Item">
+        <id property="item_code" column="item_code"/>
+        <result property="name" column="name" />
+        <result property="volume" column="volume" />
+    </resultMap>
+
+    <select id="getRawMaterialList" resultMap="rawMap">
+        <![CDATA[
+    SELECT r.raw_materials_code, i.item_code, r.raw_type, r.unit, r.renewability, r.standard_quantity, r.origin, i.name, i.volume
+    FROM (
+        SELECT ROWNUM R,raw_materials_code, item_code, raw_type, renewability, unit, standard_quantity, origin
+        FROM raw_materials
+        WHERE ROWNUM <= #{pageNum} * #{amount}
+    ) r
+    LEFT JOIN item i ON r.item_code = i.item_code
+    ]]>
+        <choose>
+            <when test="searchType == 'name'">
+                <![CDATA[
+            WHERE i.name LIKE '%' || #{searchContent} || '%'
+            ]]>
+            </when>
+            <when test="searchType == 'raw_materials_code'">
+                <![CDATA[
+            WHERE r.raw_materials_code LIKE '%' || #{searchContent} || '%'
+            ]]>
+            </when>
+        </choose>
+        <![CDATA[
+    AND R > (#{pageNum} - 1) * #{amount}
+    ]]>
+    </select>
+
+    <select id="getRawMaterial" resultMap="rawMap" parameterType="int">
+        SELECT r.raw_materials_code, i.item_code, r.raw_type, r.unit, r.renewability, r.standard_quantity, r.origin, i.name, i.volume
+        FROM raw_materials r LEFT JOIN item i
+        ON r.item_code = i.item_code
+        WHERE r.raw_materials_code=#{raw_materials_code}
+    </select>
+
+
+    <update id="updateItem" parameterType="com.example.springreact.domain.Item">
+        UPDATE item SET name=#{name} WHERE item_code=#{item_code}
+    </update>
+
+    <update id="updateRawMaterial" parameterType="com.example.springreact.domain.RawMaterials">
+        UPDATE raw_materials SET renewability=#{renewability}, standard_quantity=#{standard_quantity}
+        WHERE raw_materials_code=#{raw_materials_code}
+    </update>
+
+    <delete id="deleteRawMaterial" parameterType="int">
+        DELETE FROM raw_materials WHERE raw_materials_code=#{raw_materials_code}
+    </delete>
+
+    <select id="getTotalRaw">
+        SELECT COUNT(*) FROM raw_Materials
+    </select>
+
+
 
 </mapper>

@@ -2,8 +2,10 @@ package com.example.springreact.vo.RequestVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class BomRequestVO {
 	

@@ -7,7 +7,7 @@ import lombok.Data;
 public class RawMaterials {
     private int raw_materials_code;
     private int item_code;
-    private String type;
+    private String raw_type;
     private String renewability;
     private String unit;
     private int standard_quantity;

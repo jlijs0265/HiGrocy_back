@@ -11,11 +11,12 @@ import lombok.NoArgsConstructor;
 public class RawMaterialRequestVO {
 
 	int raw_materials_code;
-	String type;
+	String raw_type;
 	String name;
 	String renewability;
 	String unit;
 	int standard_quantity;
+	String volume;
 	String origin;
 
 
