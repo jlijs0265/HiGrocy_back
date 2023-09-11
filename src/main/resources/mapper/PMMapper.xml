@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springreact.mapper.PMMapper">
+
+    <insert id="save" parameterType="com.example.springreact.domain.ProductionMachine">
+        <selectKey resultType="int" keyProperty="machine_code" order="BEFORE">
+            SELECT seq_machine_code.nextval FROM dual
+        </selectKey>
+    INSERT INTO production_machine(machine_code, type, gas_emissions, energy_usage) VALUES( #{machine_code}, #{type}, #{gas_emissions}, #{energy_usage})
+
+    </insert>
+
+    <select id="findAll" resultType="com.example.springreact.domain.ProductionMachine">
+        SELECT * FROM production_machine
+    </select>
+
+    <update id="update" parameterType="com.example.springreact.domain.ProductionMachine">
+        UPDATE production_machine SET type = #{type}, gas_emissions = #{gas_emissions}, energy_usage= #{energy_usage}
+        WHERE machine_code = #{machine_code}
+
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE production_machine WHERE machine_code = #{machine_code}
+    </delete>
+
+
+
+</mapper>

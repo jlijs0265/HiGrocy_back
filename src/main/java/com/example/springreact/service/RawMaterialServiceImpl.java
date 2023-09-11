@@ -2,8 +2,10 @@ package com.example.springreact.service;
 
 import com.example.springreact.domain.Item;
 import com.example.springreact.domain.RawMaterials;
+import com.example.springreact.dto.Criteria;
 import com.example.springreact.dto.ItemDTO;
 import com.example.springreact.dto.RawMaterialDTO;
+import com.example.springreact.dto.PageDto;
 import com.example.springreact.mapper.RawMaterialMapper;
 import com.example.springreact.vo.ResponseVO.RawMaterialResponseVO;
 import lombok.extern.java.Log;
@@ -44,8 +46,8 @@ public class RawMaterialServiceImpl implements RawMaterialService{
     }
 
     @Override
-    public ArrayList<RawMaterialResponseVO> getRawMaterialList() {
-        List<RawMaterialDTO> rawList = rawMaterialMapper.getRawMaterialList();
+    public ArrayList<RawMaterialResponseVO> getRawMaterialList(Criteria criteria) {
+        List<RawMaterialDTO> rawList = rawMaterialMapper.getRawMaterialList(criteria);
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -91,6 +93,11 @@ public class RawMaterialServiceImpl implements RawMaterialService{
     @Override
     public void deleteRawMaterial(int raw_materials_code) {
         rawMaterialMapper.deleteRawMaterial(raw_materials_code);
+    }
+
+    @Override
+    public int getTotalRaw() {
+        return rawMaterialMapper.getTotalRaw();
     }
 
 
